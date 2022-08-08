@@ -4,6 +4,7 @@ PATH
     ecs_autoscaling_scheduler (0.1.0)
       aws-sdk-applicationautoscaling (~> 1.62)
       aws-sdk-ecs (~> 1.100)
+      tty-prompt (~> 0.23)
 
 GEM
   remote: https://rubygems.org/
@@ -62,6 +63,8 @@ GEM
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
+    pastel (0.8.0)
+      tty-color (~> 0.5)
     racc (1.6.0)
     rack (2.2.4)
     rack-test (2.0.2)
@@ -127,9 +130,20 @@ GEM
       rubocop-rails (~> 2.0)
     ruby-progressbar (1.11.0)
     thor (1.2.1)
+    tty-color (0.6.0)
+    tty-cursor (0.7.1)
+    tty-prompt (0.23.1)
+      pastel (~> 0.8)
+      tty-reader (~> 0.8)
+    tty-reader (0.9.0)
+      tty-cursor (~> 0.7)
+      tty-screen (~> 0.8)
+      wisper (~> 2.0)
+    tty-screen (0.8.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
+    wisper (2.0.1)
     zeitwerk (2.6.0)
 
 PLATFORMS
