@@ -4,41 +4,24 @@ require "tty-prompt"
 
 module EcsAutoscalingScheduler
   class Cli
-    def index
-      cluster_name = ask_cluster_name
-      service_name = ask_service_name(cluster_name)
+    COMMAND = {
+      index: "index",
+      create: "create",
+      destroy: "destroy",
+      bye: "bye",
+    }
 
-      scheduled_actions = application_auto_scaling_client.describe_scheduled_actions(cluster_name: cluster_name, service_name: service_name)
-
-      scheduled_actions.each do |scheduled_action|
-        pp scheduled_action
+    def run
+      case ask_command
+      when COMMAND[:index]
+        index
+      when COMMAND[:create]
+        create
+      when COMMAND[:destroy]
+        destroy
+      else
+        puts "bye."
       end
-    end
-
-    def create
-      cluster_name          = ask_cluster_name
-      service_name          = ask_service_name(cluster_name)
-      schedule              = ask_schedule
-      min_capacity          = ask_min_capacity
-      max_capacity          = ask_max_capacity
-      scheduled_action_name = ask_scheduled_action_name(schedule, min_capacity, max_capacity)
-
-      application_auto_scaling_client.put_scheduled_action(
-        cluster_name:          cluster_name,
-        service_name:          service_name,
-        scheduled_action_name: scheduled_action_name,
-        schedule_datetime:     schedule,
-        min_capacity:          min_capacity,
-        max_capacity:          max_capacity,
-      )
-    end
-
-    def destroy
-      cluster_name          = ask_cluster_name
-      service_name          = ask_service_name(cluster_name)
-      scheduled_action_name = ask_to_select_scheduled_action_name(cluster_name, service_name)
-
-      application_auto_scaling_client.delete_scheduled_action(cluster_name: cluster_name, service_name: service_name, scheduled_action_name: scheduled_action_name)
     end
 
     private
@@ -52,6 +35,54 @@ module EcsAutoscalingScheduler
 
       def application_auto_scaling_client
         @application_auto_scaling_client ||= EcsAutoscalingScheduler::Aws::ApplicationAutoScaling.new
+      end
+
+      def index
+        cluster_name = ask_cluster_name
+        service_name = ask_service_name(cluster_name)
+
+        scheduled_actions = application_auto_scaling_client.describe_scheduled_actions(
+          cluster_name: cluster_name,
+          service_name: service_name,
+        )
+
+        scheduled_actions.each do |scheduled_action|
+          pp scheduled_action
+        end
+      end
+
+      def create
+        cluster_name          = ask_cluster_name
+        service_name          = ask_service_name(cluster_name)
+        schedule              = ask_schedule
+        min_capacity          = ask_min_capacity
+        max_capacity          = ask_max_capacity
+        scheduled_action_name = ask_scheduled_action_name(schedule, min_capacity, max_capacity)
+
+        application_auto_scaling_client.put_scheduled_action(
+          cluster_name:          cluster_name,
+          service_name:          service_name,
+          scheduled_action_name: scheduled_action_name,
+          schedule_datetime:     schedule,
+          min_capacity:          min_capacity,
+          max_capacity:          max_capacity,
+        )
+      end
+
+      def destroy
+        cluster_name          = ask_cluster_name
+        service_name          = ask_service_name(cluster_name)
+        scheduled_action_name = ask_to_select_scheduled_action_name(cluster_name, service_name)
+
+        application_auto_scaling_client.delete_scheduled_action(
+          cluster_name: cluster_name,
+          service_name: service_name,
+          scheduled_action_name: scheduled_action_name,
+        )
+      end
+
+      def ask_command
+        prompt.select("Which command do you want to do?", COMMAND.values, required: true)
       end
 
       def ask_cluster_name
