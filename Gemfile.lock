@@ -3,6 +3,7 @@ PATH
   specs:
     ecs_autoscaling_scheduler (0.1.0)
       aws-sdk-applicationautoscaling (~> 1.62)
+      aws-sdk-ecs (~> 1.100)
 
 GEM
   remote: https://rubygems.org/
@@ -37,6 +38,9 @@ GEM
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1, >= 1.6.1)
+    aws-sdk-ecs (1.100.0)
+      aws-sdk-core (~> 3, >= 3.127.0)
+      aws-sigv4 (~> 1.1)
     aws-sigv4 (1.5.1)
       aws-eventstream (~> 1, >= 1.0.2)
     builder (3.2.4)
