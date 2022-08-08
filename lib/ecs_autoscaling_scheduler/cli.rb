@@ -46,8 +46,8 @@ module EcsAutoscalingScheduler
           service_name: service_name,
         )
 
-        scheduled_actions.each do |scheduled_action|
-          pp scheduled_action
+        scheduled_actions.sort_by(&:schedule).each do |a|
+          puts "* name: #{a.scheduled_action_name}, min: #{a.scalable_target_action.min_capacity}, max: #{a.scalable_target_action.max_capacity}, schedule: #{a.schedule}, timezone: #{a.timezone}"
         end
       end
 
