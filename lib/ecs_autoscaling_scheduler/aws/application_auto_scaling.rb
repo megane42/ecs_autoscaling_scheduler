@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "aws-sdk-applicationautoscaling"
 
 module EcsAutoscalingScheduler
@@ -45,8 +47,8 @@ module EcsAutoscalingScheduler
       end
 
       private
-
-      attr_reader :client, :timezone
+        attr_reader :client
+        attr_reader :timezone
     end
   end
 end
