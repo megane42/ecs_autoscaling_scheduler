@@ -13,14 +13,19 @@ module EcsAutoscalingScheduler
         max_capacity          = ask_max_capacity
         scheduled_action_name = ask_scheduled_action_name(schedule, min_capacity, max_capacity)
 
-        application_auto_scaling_client.put_scheduled_action(
-          cluster_name:          cluster_name,
-          service_name:          service_name,
-          scheduled_action_name: scheduled_action_name,
-          schedule_datetime:     schedule,
-          min_capacity:          min_capacity,
-          max_capacity:          max_capacity,
-        )
+        if ask_ok
+          application_auto_scaling_client.put_scheduled_action(
+            cluster_name:          cluster_name,
+            service_name:          service_name,
+            scheduled_action_name: scheduled_action_name,
+            schedule_datetime:     schedule,
+            min_capacity:          min_capacity,
+            max_capacity:          max_capacity,
+          )
+          puts "Create complete."
+        else
+          puts "Create cancelled."
+        end
       end
 
       private
@@ -58,6 +63,10 @@ module EcsAutoscalingScheduler
 
         def ask_scheduled_action_name(schedule, min_capacity, max_capacity)
           prompt.ask("What is the name of the scheduled action?", default: "#{schedule.strftime('%Y%m%d-%H%M%S')}-min-#{min_capacity}-max-#{max_capacity}", required: true)
+        end
+
+        def ask_ok
+          prompt.yes?("Do you want to create this scheduled action?", required: true)
         end
     end
   end

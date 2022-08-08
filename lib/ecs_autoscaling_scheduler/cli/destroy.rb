@@ -10,11 +10,16 @@ module EcsAutoscalingScheduler
         service_name          = ask_service_name(cluster_name)
         scheduled_action_name = ask_scheduled_action_name(cluster_name, service_name)
 
-        application_auto_scaling_client.delete_scheduled_action(
-          cluster_name: cluster_name,
-          service_name: service_name,
-          scheduled_action_name: scheduled_action_name,
-        )
+        if ask_ok
+          application_auto_scaling_client.delete_scheduled_action(
+            cluster_name: cluster_name,
+            service_name: service_name,
+            scheduled_action_name: scheduled_action_name,
+          )
+          puts "Destroy complete."
+        else
+          puts "Destroy cancelled."
+        end
       end
 
       private
@@ -40,6 +45,10 @@ module EcsAutoscalingScheduler
 
         def ask_scheduled_action_name(cluster_name, service_name)
           prompt.select("Which scheduled action do you want to destroy?", application_auto_scaling_client.describe_scheduled_actions(cluster_name: cluster_name, service_name: service_name).map(&:scheduled_action_name), required: true)
+        end
+
+        def ask_ok
+          prompt.yes?("Do you want to destroy this scheduled action?", required: true)
         end
     end
   end
