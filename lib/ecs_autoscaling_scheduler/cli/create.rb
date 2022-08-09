@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "tty-prompt"
+require "active_support"
+require "active_support/time"
 
 module EcsAutoscalingScheduler
   class Cli
@@ -8,6 +10,7 @@ module EcsAutoscalingScheduler
       def run
         cluster_name          = ask_cluster_name
         service_name          = ask_service_name(cluster_name)
+        timezone              = ask_timezone
         schedule              = ask_schedule
         min_capacity          = ask_min_capacity
         max_capacity          = ask_max_capacity
@@ -19,6 +22,7 @@ module EcsAutoscalingScheduler
             service_name:          service_name,
             scheduled_action_name: scheduled_action_name,
             schedule_datetime:     schedule,
+            timezone:              timezone,
             min_capacity:          min_capacity,
             max_capacity:          max_capacity,
           )
@@ -30,7 +34,7 @@ module EcsAutoscalingScheduler
 
       private
         def prompt
-          @prompt ||= TTY::Prompt.new
+          @prompt ||= TTY::Prompt.new(interrupt: :signal)
         end
 
         def ecs_client
@@ -47,6 +51,10 @@ module EcsAutoscalingScheduler
 
         def ask_service_name(cluster)
           prompt.select("Which service do you want to scale?", ecs_client.all_service_names(cluster: cluster), required: true)
+        end
+
+        def ask_timezone
+          prompt.ask("What is your time zone? (use 'Canonical ID' of https://www.joda.org/joda-time/timezones.html)", default: guess_timezone_name, required: true)
         end
 
         def ask_schedule
@@ -67,6 +75,15 @@ module EcsAutoscalingScheduler
 
         def ask_ok
           prompt.yes?("Do you want to create this scheduled action?", required: true)
+        end
+
+        def guess_timezone_name
+          # https://github.com/rails/rails/blob/v6.0.2.1/railties/lib/rails/tasks/misc.rake#L41-L51
+          # https://blog.onk.ninja/2020/01/31/guess_local_timezone
+          jan_offset = Time.now.beginning_of_year.utc_offset
+          jul_offset = Time.now.beginning_of_year.change(month: 7).utc_offset
+          offset     = jan_offset < jul_offset ? jan_offset : jul_offset
+          ActiveSupport::TimeZone.all.detect { |zone| zone.utc_offset == offset }.tzinfo.name
         end
     end
   end

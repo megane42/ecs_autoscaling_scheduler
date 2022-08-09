@@ -5,9 +5,8 @@ require "aws-sdk-applicationautoscaling"
 module EcsAutoscalingScheduler
   module Aws
     class ApplicationAutoScaling
-      def initialize(client: ::Aws::ApplicationAutoScaling::Client.new, timezone: "UTC")
-        @client   = client
-        @timezone = timezone
+      def initialize(client: ::Aws::ApplicationAutoScaling::Client.new)
+        @client = client
       end
 
       def describe_scheduled_actions(cluster_name:, service_name:)
@@ -19,7 +18,7 @@ module EcsAutoscalingScheduler
         ).scheduled_actions
       end
 
-      def put_scheduled_action(cluster_name:, service_name:, scheduled_action_name:, schedule_datetime:, min_capacity:, max_capacity:)
+      def put_scheduled_action(cluster_name:, service_name:, scheduled_action_name:, schedule_datetime:, timezone:, min_capacity:, max_capacity:)
         client.put_scheduled_action(
           {
             service_namespace: "ecs",
@@ -49,7 +48,6 @@ module EcsAutoscalingScheduler
 
       private
         attr_reader :client
-        attr_reader :timezone
 
         def resource_id(cluster_name:, service_name:)
           "service/#{cluster_name}/#{service_name}"
