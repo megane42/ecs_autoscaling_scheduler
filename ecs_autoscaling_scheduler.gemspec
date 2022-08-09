@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["megane42"]
   spec.email   = [""]
 
-  spec.summary  = "A CLI to manage scheduled scaling for your ECS service"
+  spec.summary  = "A CLI to manage scheduled scaling for ECS services"
   spec.homepage = "https://github.com/megane42/ecs_autoscaling_scheduler/"
   spec.license  = "MIT"
   spec.required_ruby_version = ">= 2.6.0"

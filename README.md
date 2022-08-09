@@ -1,38 +1,45 @@
 # EcsAutoscalingScheduler
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ecs_autoscaling_scheduler`. To experiment with that code, run `bin/console` for an interactive prompt.
+![screen](https://user-images.githubusercontent.com/8451003/183574722-93d2c31d-c5af-4fb0-a1a1-9099088c72b8.gif)
 
-TODO: Delete this and the text above, and describe your gem
+## Requirements
+
+- Do `aws configure`
+  - https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
+- Register your ECS service as a scalable target
+  - https://docs.aws.amazon.com/cli/latest/reference/application-autoscaling/register-scalable-target.html
 
 ## Installation
-
-Add this line to your application's Gemfile:
 
 ```ruby
 gem 'ecs_autoscaling_scheduler'
 ```
 
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install ecs_autoscaling_scheduler
-
 ## Usage
 
-TODO: Write usage instructions here
+```
+AWS_PROFILE=foo ecs_autoscaling_scheduler
+```
+
+## Motivations
+
+- At this time, we can configure "target-tracking scaling" or "step scaling" for your ECS service through the AWS Management Console or copilot-cli, but somehow can not configure "scheduled scaling" (even though they have APIs to set up scheduled scaling).
+- Target-tracking scaling or step scaling is not enough for a spike access.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+- Check current behavior from console
+  - `bin/console`
+- Check current behavior as entire gem
+  - `bin/run`
+- Release
+  - `emacs CHANGELOG.md` (see https://keepachangelog.com/en/1.0.0/)
+  - `emacs lib/ecs_autoscaling_scheduler/version.rb`
+  - `bundle exec rake release`
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ecs_autoscaling_scheduler.
+Bug reports and pull requests are welcome on GitHub at https://github.com/megane42/ecs_autoscaling_scheduler.
 
 ## License
 
