@@ -6,7 +6,7 @@ require "tzinfo"
 
 module EcsAutoscalingScheduler
   class Cli
-    class DestroyOutDated
+    class DestroyOutdated
       def run
         cluster_name = ask_cluster_name
         service_name = ask_service_name(cluster_name)

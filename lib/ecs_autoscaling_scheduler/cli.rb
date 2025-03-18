@@ -27,7 +27,7 @@ module EcsAutoscalingScheduler
       when COMMAND[:destroy]
         Destroy.new.run
       when COMMAND[:destroy_outdated]
-        DestroyOutDated.new.run
+        DestroyOutdated.new.run
       else
         Bye.new.run
       end
