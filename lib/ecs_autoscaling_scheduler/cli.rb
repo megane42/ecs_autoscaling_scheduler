@@ -3,6 +3,7 @@
 require_relative "cli/index"
 require_relative "cli/create"
 require_relative "cli/destroy"
+require_relative "cli/destroy_outdated"
 require_relative "cli/bye"
 
 require "tty-prompt"
@@ -13,6 +14,7 @@ module EcsAutoscalingScheduler
       index: "index",
       create: "create",
       destroy: "destroy",
+      destroy_outdated: "destroy_outdated",
       bye: "bye",
     }
 
@@ -24,6 +26,8 @@ module EcsAutoscalingScheduler
         Create.new.run
       when COMMAND[:destroy]
         Destroy.new.run
+      when COMMAND[:destroy_outdated]
+        DestroyOutDated.new.run
       else
         Bye.new.run
       end
