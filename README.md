@@ -23,8 +23,8 @@ AWS_PROFILE=foo ecs_autoscaling_scheduler
 
 ## Motivations
 
-- At this time, we can configure "target-tracking scaling" or "step scaling" for your ECS service through the AWS Management Console or copilot-cli, but somehow can not configure "scheduled scaling" (even though they have APIs to set up scheduled scaling).
-- Target-tracking scaling or step scaling is not enough for a spike access.
+- As of August 2022, there was no way to configure Scheduled Scaling from the AWS Management Console (even though they have APIs to set it up).
+  - It is now possible to configure it, so perhaps this tool is no longer needed.
 
 ## Development
 
