@@ -7,14 +7,14 @@ require "active_support/time"
 module EcsAutoscalingScheduler
   class Cli
     class Create
-      def run
-        cluster_name          = ask_cluster_name
-        service_name          = ask_service_name(cluster_name)
-        timezone              = ask_timezone
-        schedule              = ask_schedule
-        min_capacity          = ask_min_capacity
-        max_capacity          = ask_max_capacity
-        scheduled_action_name = ask_scheduled_action_name(schedule, min_capacity, max_capacity)
+      def run(option)
+        cluster_name          = option.cluster_name          || ask_cluster_name
+        service_name          = option.service_name          || ask_service_name(cluster_name)
+        timezone              = option.timezone              || ask_timezone
+        schedule              = option.schedule              || ask_schedule
+        min_capacity          = option.min_capacity          || ask_min_capacity
+        max_capacity          = option.max_capacity          || ask_max_capacity
+        scheduled_action_name = option.scheduled_action_name || ask_scheduled_action_name(schedule, min_capacity, max_capacity)
 
         if ask_ok
           application_auto_scaling_client.put_scheduled_action(

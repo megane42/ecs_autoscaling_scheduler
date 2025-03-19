@@ -5,9 +5,9 @@ require "tty-prompt"
 module EcsAutoscalingScheduler
   class Cli
     class Destroy
-      def run
-        cluster_name = ask_cluster_name
-        service_name = ask_service_name(cluster_name)
+      def run(option)
+        cluster_name = option.cluster_name || ask_cluster_name
+        service_name = option.service_name || ask_service_name(cluster_name)
 
         scheduled_action_names = application_auto_scaling_client.describe_scheduled_actions(cluster_name: cluster_name, service_name: service_name).map(&:scheduled_action_name)
         if scheduled_action_names.length == 0
@@ -15,7 +15,7 @@ module EcsAutoscalingScheduler
           return
         end
 
-        scheduled_action_name = ask_scheduled_action_name(scheduled_action_names)
+        scheduled_action_name = option.scheduled_action_name || ask_scheduled_action_name(scheduled_action_names)
 
         if ask_ok
           application_auto_scaling_client.delete_scheduled_action(
