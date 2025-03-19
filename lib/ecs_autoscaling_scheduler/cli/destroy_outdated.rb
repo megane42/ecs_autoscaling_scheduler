@@ -7,9 +7,9 @@ require "tzinfo"
 module EcsAutoscalingScheduler
   class Cli
     class DestroyOutdated
-      def run
-        cluster_name = ask_cluster_name
-        service_name = ask_service_name(cluster_name)
+      def run(option)
+        cluster_name = option.cluster_name || ask_cluster_name
+        service_name = option.service_name || ask_service_name(cluster_name)
 
         scheduled_actions = application_auto_scaling_client.describe_scheduled_actions(cluster_name: cluster_name, service_name: service_name)
         if scheduled_actions.length == 0
