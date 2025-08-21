@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [0.2.1] - 2025-08-21
+
+### Fixed
+
+- Relax dependency for activesupport.
+
 ## [0.2.0] - 2025-03-19
 
 ### Added

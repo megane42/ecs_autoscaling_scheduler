@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    ecs_autoscaling_scheduler (0.2.0)
-      activesupport (~> 6.1)
+    ecs_autoscaling_scheduler (0.2.1)
+      activesupport (> 6.1)
       aws-sdk-applicationautoscaling (~> 1.62)
       aws-sdk-ecs (~> 1.100)
       tty-prompt (~> 0.23)
